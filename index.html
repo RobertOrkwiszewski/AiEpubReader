@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Reader</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="localStorage.js" defer></script>
+    <script src="geminiApi.js" defer></script>
+    <script src="db.js" defer></script>
+    <script src="backend.js" defer></script>
+    <script src="parser.js" defer></script>
+    <script src="language.js" defer></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/epub.js/0.3.88/epub.min.js"></script> <!-- EPUB DISPLAY -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/epubjs/dist/epub.min.js"></script>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <section id="booklist" class="page">
+
+        <div class="header">
+            <div class="parallelHeader">
+                <text id="deineBücher">Deine Bücher</text>
+                <div class="settingButtonsContainer">
+                    <button id="addApiKeyButton"><i data-lucide="key-round"></i></button>
+                    <button class="addBookButton" onclick="document.getElementById('file-upload').click()">
+                        <i data-lucide="plus"></i></button>
+                </div>
+                <input type="file" id="file-upload" accept=".epub" style="display:none">
+            </div>
+            <div class="parallelHeader">
+                <button id="langBtn" class="langThemeBtn"><span id="langBtnLabel">Sprache:&nbsp;</span><span
+                        id="selectedLanguage"></span></button>
+                <button id="themeBtn" class="langThemeBtn"><i data-lucide="palette"></i></button>
+            </div>
+
+        </div>
+        <div id="bookListContainer">
+            <ul id="bookList">
+            </ul>
+        </div>
+
+    </section>
+
+    <section id="reader" class="page">
+        <div id="readerCase">
+            <div id="viewer"></div>
+
+            <div id="readerBottomBar">
+                <button id="prevPageBtn" class="readerButtons"><i data-lucide="arrow-left"></i></button>
+                <button id="askAiBtn" class="readerButtons"><i data-lucide="brain"></i></button>
+                <button id="homeBtn" class="readerButtons"><i data-lucide="house"></i></button>
+                <button id="addNoteBtn" class="readerButtons"><i data-lucide="notebook-text"></i></button>
+                <button id="nextPageBtn" class="readerButtons"><i data-lucide="arrow-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <section id="notes" class="page">
+        <div id="notesCase">
+            <button id="notesHomeBtn"><i data-lucide="house"></i></button>
+        </div>
+        <ul id="notesList">
+        </ul>
+    </section>
+
+    <section id="ai" class="page">
+        <div id="aiCase">
+            <ul id="aiChatList">
+            </ul>
+
+            <div id="aiInputCase">
+                <textarea id="askAiTextField" placeholder="Frage die KI"></textarea>
+
+                <div id="aiButtonCase">
+                    <button id="aiHomeBtn"><i data-lucide="house"></i></button>
+                    <button id="sendAiBtn"><i data-lucide="send-horizontal"></i></button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <div id="language-modal" class="modal-overlay">
+        <text id="spracheAuswaehlen" class="languageText">Sprache auswählen</text>
+        <ul id="language-list">
+        </ul>
+    </div>
+    <div id="reader-modal" class="modal-overlay">
+        <text id="uebersetzung" class="modalText">Übersetzung : </text>
+        <text id="translation" class="modalText"></text>
+        <button id="askAi" class="modalButtons">Ask AI</button>
+        <button id="addNote" class="modalButtons">Notiz hinzufügen</button>
+    </div>
+    <div id="addNote-modal" class="modal-overlay">
+        <text id="noteText" class="modalText"></text>
+        <textarea id="notesTextField" class="modalTextField"></textarea>
+        <button id="addNoteConfirm" class="modalButtons">Notiz hinzufügen</button>
+        <button id="addNoteDecline" class="modalButtons">Abbrechen</button>
+    </div>
+    <div id="apiKey-modal" class="modal-overlay">
+        <text id="apiKeyText" class="modalText">API-KEY hinzufügen</text>
+        <textarea id="apiKeyTextField" class="modalTextField"></textarea>
+        <button id="apiKeyAdd" class="modalButtons">API-KEY hinzufügen</button>
+        <button id="apiKeyDelete" class="modalButtons">API-KEY löschen</button>
+        <button id="apiKeyClose" class="modalButtons"><i data-lucide="house"></i></button>
+    </div>
+
+    <div id="confirmTaskModal" class="modal-overlay">
+        <text id="confirmTaskText" class="modalText"></text>
+        <button id="cancelTaskButton" class="modalButtons">Abbrechen</button>
+        <button id="confirmTaskButton" class="modalButtons">Bestätigen</button>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,492 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--primary-color);
+}
+
+/* Force form elements to inherit font */
+button,
+input,
+textarea,
+select {
+    font-family: inherit;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+::selection {
+    color: var(--accent-color);
+}
+
+::placeholder {
+    color: var(--primary-color);
+}
+
+#askAiTextField::placeholder {
+    color: var(--secondary-color);
+}
+
+input:focus,
+textarea:focus {
+    outline: 2px solid var(--accent-color);
+}
+
+button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.lucide {
+    width: 20px;
+    height: 20px;
+    stroke-width: 3px;
+    /* Dicke der Linien */
+    color: currentColor;
+    /* Übernimmt die Farbe des Buttons */
+}
+
+:root {
+    /* Define variables here */
+    --primary-color: black;
+    --secondary-color: white;
+    --accent-color: grey;
+    --borderRad: 8px;
+}
+
+/* ---------- MODAL PAGE BEGIN ---------- */
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: var(--primary-color);
+    border: 1px solid var(--accent-color);
+    border-radius: var(--borderRad);
+    padding: 20px;
+    z-index: 1000;
+}
+
+.modal-overlay.open {
+    display: flex;
+}
+
+#language-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.languageText {
+    margin: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--secondary-color);
+    text-align: center;
+}
+
+/* Page visibility: hide pages by default, show only the active one */
+.page {
+    display: none
+}
+
+.page.active {
+    display: block
+}
+
+.modalText {
+    margin: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    color: var(--secondary-color);
+}
+
+#uebersetzung {
+    margin: 20px 20px 0px 20px;
+}
+
+.modalTextField {
+    margin: 0px 20px 20px 20px;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border: 1px solid var(--accent-color);
+    border-radius: var(--borderRad);
+}
+
+.modalButtons {
+    margin: 0px 20px 20px 20px;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border: 1px solid var(--accent-color);
+    border-radius: var(--borderRad);
+}
+
+.modalButtons:hover {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+/* ---------- MODAL PAGE END ---------- */
+
+/* ---------- BOOKLIST PAGE BEGIN ---------- */
+
+.parallelHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--primary-color);
+    border-bottom: 2px solid var(--secondary-color);
+}
+
+.settingButtonsContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.bookItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--accent-color);
+    margin-left: 40px;
+    margin-right: 20px;
+}
+
+.bookTitle {
+    margin: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--secondary-color);
+}
+
+.bookDeleteButton {
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+    padding: 10px;
+    cursor: pointer;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border: 1px solid var(--accent-color);
+    border-radius: var(--borderRad);
+}
+
+.bookDeleteButton:hover {
+    color: var(--secondary-color);
+    background-color: var(--primary-color);
+}
+
+#deineBücher {
+    margin: 20px;
+    font-size: 30px;
+    font-weight: bold;
+    color: var(--secondary-color);
+}
+
+.addBookButton {
+    margin: 20px;
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border: 1px solid var(--accent-color);
+    border-radius: var(--borderRad);
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.addBookButton:hover {
+    color: var(--primary-color);
+    background-color: var(--secondary-color);
+}
+
+#addApiKeyButton {
+    margin: 20px 0px 20px 20px;
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border: 1px solid var(--accent-color);
+    border-radius: var(--borderRad);
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#addApiKeyButton:hover {
+    color: var(--primary-color);
+    background-color: var(--secondary-color);
+}
+
+.langThemeBtn {
+    margin: 0px 20px 20px 20px;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    width: fit-content;
+    color: var(--secondary-color);
+    background-color: var(--primary-color);
+    border: 1px solid var(--accent-color);
+    border-radius: var(--borderRad);
+    cursor: pointer;
+}
+
+.langThemeBtn:hover {
+    color: var(--primary-color);
+    background-color: var(--secondary-color);
+}
+
+/* ---------- BOOKLIST PAGE END ---------- */
+
+/* ---------- READER PAGE BEGIN ---------- */
+
+#readerCase {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+}
+
+#viewer {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    /* takes remaining space */
+    width: 100%;
+}
+
+#readerBottomBar {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    background-color: var(--primary-color);
+}
+
+.readerButtons {
+    padding: 10px;
+    cursor: pointer;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border: 1px solid var(--accent-color);
+    border-radius: var(--borderRad);
+}
+
+/* ---------- READER PAGE END ---------- */
+
+
+/* ---------- AI PAGE BEGIN ---------- */
+
+/* Container für den gesamten AI-Bereich */
+#aiCase {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    /* Ganze Bildschirmhöhe */
+    width: 100%;
+}
+
+/* Die Chat-Liste soll den restlichen Platz einnehmen */
+#aiChatList {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    /* Scrollbar, wenn es zu viele Nachrichten gibt */
+    list-style: none;
+    padding: 20px;
+}
+
+/* Grundstyling für alle Nachrichten */
+#aiChatList li {
+    padding: 12px 18px;
+    word-wrap: break-word;
+}
+
+/* User: Sprechblase rechts */
+.user-message {
+    align-self: flex-end;
+    background-color: grey;
+    color: white;
+    border-radius: 15px;
+    border-bottom-right-radius: 2px !important;
+}
+
+/* Model: Ganze Breite oder links */
+.model-message {
+    align-self: flex-start;
+    color: darkgrey;
+}
+
+/* Eingabebereich ganz unten fixieren */
+#aiInputCase {
+    display: flex;
+    flex-direction: column;
+    background: var(--primary-color);
+    border-top: 2px solid var(--secondary-color);
+    border-radius: var(--borderRad);
+}
+
+#askAiTextField {
+    margin: 20px 20px 0px 20px;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border: 1px solid var(--secondary-color);
+    border-radius: var(--borderRad);
+    height: 50px;
+    resize: none;
+}
+
+#aiButtonCase {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#sendAiBtn {
+    margin: 20px;
+    padding: 20px;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border: 1px solid var(--secondary-color);
+    border-radius: var(--borderRad);
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#aiHomeBtn {
+    margin: 20px;
+    padding: 20px;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border: 1px solid var(--secondary-color);
+    border-radius: var(--borderRad);
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* ---------- AI PAGE END ---------- */
+
+/* ---------- NOTES PAGE BEGIN ---------- */
+
+#notesCase {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 2px solid var(--secondary-color);
+}
+
+#notesList {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    list-style: none;
+}
+
+.noteButtonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--accent-color);
+}
+
+.noteNote {
+    margin: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--secondary-color);
+}
+
+.noteText {
+    margin: 0px 20px 0px 20px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--secondary-color);
+}
+
+.noteLink {
+    margin: 20px;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border: 1px solid var(--accent-color);
+    border-radius: var(--borderRad);
+}
+
+.noteLink:hover {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+.noteDelete {
+    margin: 20px;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border: 1px solid var(--accent-color);
+    border-radius: var(--borderRad);
+}
+
+.noteDelete:hover {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+#notesHomeBtn {
+    margin: 20px;
+    padding: 20px;
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border: 2px solid var(--accent-color);
+    border-radius: var(--borderRad);
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#notesHomeBtn:hover {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+/* ---------- NOTES PAGE END ---------- */

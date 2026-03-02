@@ -22,7 +22,7 @@ lucide.createIcons();
 
 let apiKEY = getStorage('gemini_api_key') || '';
 
-let userLanguage = getStorage('userLanguage') || 'en';
+let userLanguage = getStorage('userLanguage') || languages[1]; // Default to English object
 let books = getStorage('my_library') || [];
 
 let popupState = {
@@ -290,6 +290,8 @@ function deleteNote(index) {
     });
 }
 async function handleSelection(text, cfiRange) {
+    if (text === selectedText && popupState.isOpen) return;
+
     openPopup('reader-modal');
 
     selectedText = text;
@@ -328,14 +330,24 @@ function applyTheme() {
     if (!currentEpubRendition) return;
 
     currentEpubRendition.themes.register("dark", {
-        body: { "background-color": "black !important", "color": "white !important" },
-        "::selection": { "color": "grey !important" },
-        "::-moz-selection": { "color": "grey !important" }
+        body: {
+            "background-color": "black !important",
+            "color": "white !important",
+            "-webkit-user-select": "text !important",
+            "user-select": "text !important"
+        },
+        "::selection": { "background": "grey !important", "color": "white !important" },
+        "::-moz-selection": { "background": "grey !important", "color": "white !important" }
     });
     currentEpubRendition.themes.register("light", {
-        body: { "background-color": "white !important", "color": "black !important" },
-        "::selection": { "color": "grey !important" },
-        "::-moz-selection": { "color": "grey !important" }
+        body: {
+            "background-color": "white !important",
+            "color": "black !important",
+            "-webkit-user-select": "text !important",
+            "user-select": "text !important"
+        },
+        "::selection": { "background": "grey !important", "color": "white !important" },
+        "::-moz-selection": { "background": "grey !important", "color": "white !important" }
     });
 
     currentEpubRendition.themes.select(readerTheme);
@@ -443,28 +455,28 @@ function displayBooks() {
                             addStorage('my_library', books);
                         });
 
-                        let lastSelectedCfi = null;
+
                         currentEpubRendition.on("selected", (cfiRange) => {
-                            lastSelectedCfi = cfiRange;
+                            currentEpubBook.getRange(cfiRange).then((range) => {
+                                const text = range.toString().trim();
+                                if (text) {
+                                    handleSelection(text, cfiRange);
+                                }
+                            });
                         });
 
+                        // Fallback for iPad/Touch devices where "selected" event might not fire reliably
                         currentEpubRendition.hooks.content.register((contents) => {
-                            const handleEnd = () => {
-                                if (lastSelectedCfi) {
-                                    currentEpubBook.getRange(lastSelectedCfi).then((range) => {
-                                        const text = range.toString().trim();
-                                        if (text) {
-                                            handleSelection(text, lastSelectedCfi);
-                                        }
-                                        lastSelectedCfi = null;
-                                    });
-                                }
-                            };
-
-                            contents.document.addEventListener("mouseup", handleEnd);
-                            contents.document.addEventListener("touchend", handleEnd);
-                            contents.document.addEventListener("mousedown", () => {
-                                lastSelectedCfi = null;
+                            contents.on("touchend", () => {
+                                setTimeout(() => {
+                                    const selection = contents.window.getSelection();
+                                    const text = selection.toString().trim();
+                                    if (text && text.length > 0 && selection.rangeCount > 0) {
+                                        const range = selection.getRangeAt(0);
+                                        const cfiRange = contents.cfiFromRange(range);
+                                        handleSelection(text, cfiRange);
+                                    }
+                                }, 100);
                             });
                         });
                     };

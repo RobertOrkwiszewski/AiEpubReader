@@ -469,7 +469,7 @@ function displayBooks() {
                             selectedText = window.getSelection().toString().trim();
                         });
 
-                        document.addEventListener('touchend', () => {
+                        currentEpubBook.on('touchend', () => {
                             // Ein minimaler Timeout stellt sicher, dass das System die Auswahl finalisiert hat
                             setTimeout(() => {
                                 if (selectedText.length > 0) {

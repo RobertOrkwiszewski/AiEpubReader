@@ -237,22 +237,20 @@ aiHomeBtn.addEventListener('click', () => {
 
 // ========== SELECTION LISTENER BEGIN ==========
 
-// General listener for non-epub content or fallback
-/*
-document.addEventListener('mouseup', () => {
-    const readerSection = document.getElementById('reader');
-    // Check if reader is active and we are not selecting inside the epub iframe (which is handled separately)
-    // However, if we are in reader, we might want to catch selections outside the iframe too.
-    if (readerSection.classList.contains('active')) {
-        const selection = window.getSelection();
-        const text = selection.toString().trim();
-        // Only trigger if text is selected and it's not handled by epub listener (epub listener handles iframe)
-        // Note: Generic selection handles the main document. Epub iframe selection is isolated.
-        if (text.length > 0) {
-            handleSelection(text);
+
+document.addEventListener('selectionchange', () => {
+    selectedText = window.getSelection().toString().trim();
+});
+
+document.addEventListener('touchend', () => {
+    // Ein minimaler Timeout stellt sicher, dass das System die Auswahl finalisiert hat
+    setTimeout(() => {
+        if (selectedText.length > 0) {
+            handleSelection(selectedText, selectedBook.currentPage);
         }
-    }
-});*/
+
+    }, 150);
+});
 
 // ========== SELECTION LISTENER END ==========
 

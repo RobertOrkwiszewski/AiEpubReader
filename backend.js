@@ -463,18 +463,20 @@ function displayBooks() {
                             });
                         });
 
-                        document.addEventListener('selectionchange', () => {
-                            selectedText = window.getSelection().toString().trim();
-                        });
+                        currentEpubRendition.hooks.content.register((contents) => {
+                            contents.document.addEventListener('selectionchange', () => {
+                                selectedText = window.getSelection().toString().trim();
+                            });
 
-                        document.addEventListener('touchend', () => {
-                            // Ein minimaler Timeout stellt sicher, dass das System die Auswahl finalisiert hat
-                            setTimeout(() => {
-                                if (selectedText.length > 0) {
-                                    handleSelection(selectedText, selectedBook.currentPage);
-                                }
+                            contents.document.addEventListener('touchend', () => {
+                                // Ein minimaler Timeout stellt sicher, dass das System die Auswahl finalisiert hat
+                                setTimeout(() => {
+                                    if (selectedText.length > 0) {
+                                        handleSelection(selectedText, selectedBook.currentPage);
+                                    }
 
-                            }, 150);
+                                }, 150);
+                            });
                         });
 
                     };

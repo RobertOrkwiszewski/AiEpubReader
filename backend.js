@@ -453,12 +453,15 @@ function displayBooks() {
                             addStorage('my_library', books);
                         });
 
+                        // Hook in den iframe, um Selection-Events abzufangen
                         currentEpubRendition.hooks.content.register((contents) => {
-                            contents.document.addEventListener('selectionchange', () => {
-                                const selection = contents.window.getSelection();
-                                selectedText = selection.toString().trim();
+                            const iframeDoc = contents.document;
+
+                            iframeDoc.addEventListener('selectionchange', () => {
+                                selectedText = iframeDoc.getSelection().toString().trim();
                             });
-                            contents.document.addEventListener('touchend', () => {
+
+                            iframeDoc.addEventListener('touchend', () => {
                                 setTimeout(() => {
                                     if (selectedText.length > 0) {
                                         handleSelection(selectedText, selectedBook.currentPage);

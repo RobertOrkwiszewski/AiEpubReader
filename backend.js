@@ -470,7 +470,9 @@ function displayBooks() {
                             contents.on("touchend", () => {
                                 setTimeout(() => {
                                     const selection = contents.window.getSelection();
-                                    const text = selection.toString().trim();
+                                    const text = "test"; //selection.toString().trim();
+                                    handleSelection(text, selectedBook.currentPage);
+
                                     if (text && text.length > 0 && selection.rangeCount > 0) {
                                         const range = selection.getRangeAt(0);
                                         const cfiRange = contents.cfiFromRange(range);

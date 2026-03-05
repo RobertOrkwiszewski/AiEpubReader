@@ -479,6 +479,7 @@ function displayBooks() {
                                 }, 100);
                             });
                         });
+
                     };
 
                     // 3. Buch anzeigen

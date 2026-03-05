@@ -465,11 +465,11 @@ function displayBooks() {
                             });
                         });
 
-                        currentEpubRendition.on('selectionchange', () => {
+                        document.addEventListener('selectionchange', () => {
                             selectedText = window.getSelection().toString().trim();
                         });
 
-                        currentEpubRendition.on('touchend', () => {
+                        document.addEventListener('touchend', () => {
                             // Ein minimaler Timeout stellt sicher, dass das System die Auswahl finalisiert hat
                             setTimeout(() => {
                                 if (selectedText.length > 0) {

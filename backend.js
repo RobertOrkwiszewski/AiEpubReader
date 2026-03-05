@@ -453,6 +453,19 @@ function displayBooks() {
                             addStorage('my_library', books);
                         });
 
+                        currentEpubRendition.hooks.content.register((contents) => {
+                            contents.document.addEventListener('selectionchange', () => {
+                                const selection = contents.window.getSelection();
+                                selectedText = selection.toString().trim();
+                            });
+                            contents.document.addEventListener('touchend', () => {
+                                setTimeout(() => {
+                                    if (selectedText.length > 0) {
+                                        handleSelection(selectedText, selectedBook.currentPage);
+                                    }
+                                }, 150);
+                            });
+                        });
 
                         currentEpubRendition.on("selected", (cfiRange) => {
                             currentEpubBook.getRange(cfiRange).then((range) => {
@@ -460,24 +473,6 @@ function displayBooks() {
                                 if (text) {
                                     handleSelection(text, cfiRange);
                                 }
-                            });
-                        });
-
-                        currentEpubRendition.hooks.content.register((contents) => {
-                            contents.document.addEventListener('selectionchange', () => {
-                                showPage('ai');
-                                //const selection = contents.window.getSelection();
-                                //selectedText = selection.toString().trim();
-                            });
-
-                            contents.document.addEventListener('touchend', () => {
-                                // Ein minimaler Timeout stellt sicher, dass das System die Auswahl finalisiert hat
-                                setTimeout(() => {
-                                    if (selectedText.length > 0) {
-                                        handleSelection(selectedText, selectedBook.currentPage);
-                                    }
-
-                                }, 150);
                             });
                         });
 

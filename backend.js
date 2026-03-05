@@ -290,7 +290,7 @@ function deleteNote(index) {
     });
 }
 async function handleSelection(text, cfiRange) {
-    if (text === selectedText && popupState.isOpen) return;
+    if (popupState.isOpen) return;
 
     openPopup('reader-modal');
 
@@ -465,32 +465,18 @@ function displayBooks() {
                             });
                         });
 
-                        currentEpubRendition.hooks.content.register((contents) => {
-                            // Event-Listener für Touch-Geräte (iPad/iPhone)
-                            contents.document.addEventListener("touchend", () => {
+                        currentEpubRendition.on('selectionchange', () => {
+                            selectedText = window.getSelection().toString().trim();
+                        });
 
-                                // WICHTIG: Ein kurzes Timeout geben, damit das iPad die 
-                                // native Textauswahl (die blauen Handles) abschließen kann.
-                                setTimeout(() => {
-                                    const selection = contents.window.getSelection();
-                                    const text = selection.toString().trim();
+                        document.addEventListener('touchend', () => {
+                            // Ein minimaler Timeout stellt sicher, dass das System die Auswahl finalisiert hat
+                            setTimeout(() => {
+                                if (selectedText.length > 0) {
+                                    handleSelection(selectedText, selectedBook.currentPage);
+                                }
 
-                                    if (text && text.length > 0) {
-                                        try {
-                                            // Wir müssen den CFI (Epub Location String) für die 
-                                            // native Markierung selbst zusammenbauen:
-                                            const range = selection.getRangeAt(0);
-                                            const cfiRange = new ePub.CFI(range, contents.cfiBase).toString();
-
-                                            // Deine Funktion aufrufen
-                                            handleSelection(text, cfiRange);
-
-                                        } catch (error) {
-                                            console.error("Fehler beim Erstellen des CFI auf dem iPad: ", error);
-                                        }
-                                    }
-                                }, 200); // 200 Millisekunden warten reicht meistens völlig aus
-                            });
+                            }, 150);
                         });
 
                     };

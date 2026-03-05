@@ -465,7 +465,9 @@ function displayBooks() {
 
                         currentEpubRendition.hooks.content.register((contents) => {
                             contents.document.addEventListener('selectionchange', () => {
-                                selectedText = contents.document.getSelection().toString().trim();
+                                const selection = contents.window.getSelection();
+                                selectedText = selection.toString().trim();
+                                //selectedText = contents.document.getSelection().toString().trim();
                             });
 
                             contents.document.addEventListener('touchend', () => {

@@ -465,20 +465,31 @@ function displayBooks() {
                             });
                         });
 
-                        // Fallback for iPad/Touch devices where "selected" event might not fire reliably
                         currentEpubRendition.hooks.content.register((contents) => {
-                            contents.on("touchend", () => {
+                            // Event-Listener für Touch-Geräte (iPad/iPhone)
+                            contents.document.addEventListener("touchend", () => {
+
+                                // WICHTIG: Ein kurzes Timeout geben, damit das iPad die 
+                                // native Textauswahl (die blauen Handles) abschließen kann.
                                 setTimeout(() => {
                                     const selection = contents.window.getSelection();
-                                    const text = "test"; //selection.toString().trim();
-                                    handleSelection(text, selectedBook.currentPage);
+                                    const text = selection.toString().trim();
 
-                                    if (text && text.length > 0 && selection.rangeCount > 0) {
-                                        const range = selection.getRangeAt(0);
-                                        const cfiRange = contents.cfiFromRange(range);
-                                        handleSelection(text, cfiRange);
+                                    if (text && text.length > 0) {
+                                        try {
+                                            // Wir müssen den CFI (Epub Location String) für die 
+                                            // native Markierung selbst zusammenbauen:
+                                            const range = selection.getRangeAt(0);
+                                            const cfiRange = new ePub.CFI(range, contents.cfiBase).toString();
+
+                                            // Deine Funktion aufrufen
+                                            handleSelection(text, cfiRange);
+
+                                        } catch (error) {
+                                            console.error("Fehler beim Erstellen des CFI auf dem iPad: ", error);
+                                        }
                                     }
-                                }, 100);
+                                }, 200); // 200 Millisekunden warten reicht meistens völlig aus
                             });
                         });
 

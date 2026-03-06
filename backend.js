@@ -1,5 +1,4 @@
 /*
-- add api key insertion
 - reader modal
 
 Deine Daten und dein API-KEY werden nur auf deinem Gerät gespeichert und werden nicht an Dritte weitergegeben.
@@ -236,21 +235,6 @@ aiHomeBtn.addEventListener('click', () => {
 
 
 // ========== SELECTION LISTENER BEGIN ==========
-
-/*
-document.addEventListener('selectionchange', () => {
-    selectedText = window.getSelection().toString().trim();
-});
-
-document.addEventListener('touchend', () => {
-    // Ein minimaler Timeout stellt sicher, dass das System die Auswahl finalisiert hat
-    setTimeout(() => {
-        if (selectedText.length > 0) {
-            handleSelection(selectedText, selectedBook.currentPage);
-        }
-
-    }, 150);
-});*/
 
 // ========== SELECTION LISTENER END ==========
 

@@ -441,7 +441,7 @@ function displayBooks() {
 
                     applyTheme();
 
-                    currentEpubRendition.hooks.content.register(function (contents) {
+                    /*currentEpubRendition.hooks.content.register(function (contents) {
                         const doc = contents.document;
                         const win = contents.window; // Wir brauchen das Window des Iframes für die Selection
 
@@ -455,7 +455,7 @@ function displayBooks() {
                             console.log("selectionchange");
                             // WICHTIG: win.getSelection() nutzen, nicht window.getSelection()!
                         });
-                    });
+                    });*/
                     if (currentEpubRendition) {
                         currentEpubRendition.on("relocated", (location) => {
                             // location.start.cfi ist der String, den wir brauchen
@@ -470,18 +470,13 @@ function displayBooks() {
                         });
 
                         // epub.js selected-Event als zusätzlicher Fallback
-                        /*currentEpubRendition.on("selected", (cfiRange) => {
+                        currentEpubRendition.on("selected", (cfiRange) => {
                             currentEpubBook.getRange(cfiRange).then((range) => {
-                                console.log("selected");
-                                const text = range.toString().trim();
-                                if (text) {
-                                    handleSelection(text, cfiRange);
-                                }
                                 selectedText = range.toString().trim();
                             });
-                        });*/
+                        });
                         currentEpubRendition.on("touchend", (e) => {
-                            handleSelection("hello world", selectedBook.currentPage);
+                            handleSelection(selectedText, selectedBook.currentPage);
                         });
 
                     };

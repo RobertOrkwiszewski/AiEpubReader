@@ -441,21 +441,6 @@ function displayBooks() {
 
                     applyTheme();
 
-                    /*currentEpubRendition.hooks.content.register(function (contents) {
-                        const doc = contents.document;
-                        const win = contents.window; // Wir brauchen das Window des Iframes für die Selection
-
-                        // 1. Dein bestehender Klick-Listener
-                        doc.addEventListener('click', (e) => {
-                            console.log("Klick im Iframe bemerkt!", e.target);
-                        });
-
-                        // 2. Der Selection-Listener für den Text im Iframe
-                        doc.addEventListener('selectionchange', () => {
-                            console.log("selectionchange");
-                            // WICHTIG: win.getSelection() nutzen, nicht window.getSelection()!
-                        });
-                    });*/
                     if (currentEpubRendition) {
                         currentEpubRendition.on("relocated", (location) => {
                             // location.start.cfi ist der String, den wir brauchen
@@ -476,7 +461,9 @@ function displayBooks() {
                             });
                         });
                         currentEpubRendition.on("touchend", (e) => {
-                            handleSelection(selectedText, selectedBook.currentPage);
+                            if (selectedText !== "") {
+                                handleSelection(selectedText, selectedBook.currentPage);
+                            }
                         });
 
                     };

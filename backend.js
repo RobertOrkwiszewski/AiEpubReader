@@ -470,18 +470,18 @@ function displayBooks() {
                         });
 
                         // epub.js selected-Event als zusätzlicher Fallback
-                        currentEpubRendition.on("selected", (cfiRange) => {
+                        /*currentEpubRendition.on("selected", (cfiRange) => {
                             currentEpubBook.getRange(cfiRange).then((range) => {
-                                /*console.log("selected");
+                                console.log("selected");
                                 const text = range.toString().trim();
                                 if (text) {
                                     handleSelection(text, cfiRange);
-                                }*/
+                                }
                                 selectedText = range.toString().trim();
                             });
-                        });
+                        });*/
                         currentEpubRendition.on("touchend", (e) => {
-                            handleSelection(selectedText, selectedBook.currentPage);
+                            handleSelection("hello world", selectedBook.currentPage);
                         });
 
                     };

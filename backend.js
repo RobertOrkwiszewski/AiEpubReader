@@ -435,7 +435,8 @@ function displayBooks() {
                         width: "100%",
                         height: "100%",
                         flow: "paginated",
-                        manager: "default"
+                        manager: "default",
+                        allowScriptedContent: true
                     });
 
                     applyTheme();
@@ -456,6 +457,21 @@ function displayBooks() {
                         // Hook in den iframe, um Selection-Events abzufangen
                         currentEpubRendition.hooks.content.register((contents) => {
                             const iframeDoc = contents.document;
+                            const iframeWin = contents.window;
+
+                            // WICHTIG: epub.js Touch-Events komplett stoppen
+                            // epub.js registriert touchstart/touchend auf dem iframe für Swipe-Navigation.
+                            // Wir stoppen die Propagation in der Capture-Phase, damit epub.js
+                            // die Events NICHT sieht und unsere eigenen Listener feuern können.
+                            iframeDoc.addEventListener('touchstart', (e) => {
+                                e.stopPropagation();
+                            }, true);
+                            iframeDoc.addEventListener('touchmove', (e) => {
+                                e.stopPropagation();
+                            }, true);
+                            iframeDoc.addEventListener('touchend', (e) => {
+                                e.stopPropagation();
+                            }, true);
 
                             iframeDoc.addEventListener('selectionchange', () => {
                                 selectedText = iframeDoc.getSelection().toString().trim();

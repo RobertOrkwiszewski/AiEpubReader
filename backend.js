@@ -452,7 +452,7 @@ function displayBooks() {
 
                         // 2. Der Selection-Listener für den Text im Iframe
                         doc.addEventListener('selectionchange', () => {
-                            console.log("Text im E-Book markiert:");
+                            console.log("selectionchange");
                             // WICHTIG: win.getSelection() nutzen, nicht window.getSelection()!
                         });
                     });
@@ -472,6 +472,7 @@ function displayBooks() {
                         // epub.js selected-Event als zusätzlicher Fallback
                         currentEpubRendition.on("selected", (cfiRange) => {
                             currentEpubBook.getRange(cfiRange).then((range) => {
+                                console.log("selected");
                                 const text = range.toString().trim();
                                 if (text) {
                                     handleSelection(text, cfiRange);

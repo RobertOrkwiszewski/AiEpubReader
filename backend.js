@@ -464,7 +464,7 @@ function displayBooks() {
                             iframeDoc.addEventListener('touchend', () => {
                                 setTimeout(() => {
                                     if (selectedText.length > 0) {
-                                        handleSelection(selectedText, selectedBook.currentPage);
+                                        handleSelection("Hello World", selectedBook.currentPage);
                                     }
                                 }, 150);
                             });

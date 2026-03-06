@@ -454,38 +454,91 @@ function displayBooks() {
                             addStorage('my_library', books);
                         });
 
-                        // Hook in den iframe, um Selection-Events abzufangen
-                        currentEpubRendition.hooks.content.register((contents) => {
-                            const iframeDoc = contents.document;
-                            const iframeWin = contents.window;
+                        // epub.js Hook-System umgehen - direkt iframe im DOM finden
+                        // und Event-Listener registrieren
+                        function attachIframeListeners(iframe) {
+                            try {
+                                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                                if (!iframeDoc) return;
 
-                            // WICHTIG: epub.js Touch-Events komplett stoppen
-                            // epub.js registriert touchstart/touchend auf dem iframe für Swipe-Navigation.
-                            // Wir stoppen die Propagation in der Capture-Phase, damit epub.js
-                            // die Events NICHT sieht und unsere eigenen Listener feuern können.
-                            iframeDoc.addEventListener('touchstart', (e) => {
-                                e.stopPropagation();
-                            }, true);
-                            iframeDoc.addEventListener('touchmove', (e) => {
-                                e.stopPropagation();
-                            }, true);
-                            iframeDoc.addEventListener('touchend', (e) => {
-                                e.stopPropagation();
-                            }, true);
+                                // Markierung setzen, damit wir nicht doppelt registrieren
+                                if (iframe._listenersAttached) return;
+                                iframe._listenersAttached = true;
 
-                            iframeDoc.addEventListener('selectionchange', () => {
-                                selectedText = iframeDoc.getSelection().toString().trim();
-                            });
+                                console.log('[EPUB] Iframe gefunden, registriere Events auf:', iframeDoc);
 
-                            iframeDoc.addEventListener('touchend', () => {
-                                setTimeout(() => {
-                                    if (selectedText.length > 0) {
-                                        handleSelection("Hello World", selectedBook.currentPage);
-                                    }
-                                }, 150);
+                                iframeDoc.addEventListener('selectionchange', () => {
+                                    try {
+                                        const sel = iframeDoc.getSelection();
+                                        if (sel) {
+                                            selectedText = sel.toString().trim();
+                                            console.log('[EPUB] selectionchange:', selectedText);
+                                        }
+                                    } catch (e) { console.error('[EPUB] selectionchange error:', e); }
+                                });
+
+                                iframeDoc.addEventListener('touchend', () => {
+                                    console.log('[EPUB] touchend fired!');
+                                    setTimeout(() => {
+                                        try {
+                                            const sel = iframeDoc.getSelection();
+                                            const text = sel ? sel.toString().trim() : '';
+                                            console.log('[EPUB] touchend text:', text);
+                                            if (text.length > 0) {
+                                                selectedText = text;
+                                                handleSelection(text, selectedBook.currentPage);
+                                            }
+                                        } catch (e) { console.error('[EPUB] touchend error:', e); }
+                                    }, 300);
+                                });
+
+                                iframeDoc.addEventListener('mouseup', () => {
+                                    setTimeout(() => {
+                                        try {
+                                            const sel = iframeDoc.getSelection();
+                                            const text = sel ? sel.toString().trim() : '';
+                                            if (text.length > 0) {
+                                                selectedText = text;
+                                                handleSelection(text, selectedBook.currentPage);
+                                            }
+                                        } catch (e) { }
+                                    }, 300);
+                                });
+
+                                // Auch den iframe load event abfangen für spätere Seitenwechsel
+                                iframe.addEventListener('load', () => {
+                                    iframe._listenersAttached = false;
+                                    attachIframeListeners(iframe);
+                                });
+
+                            } catch (e) {
+                                console.error('[EPUB] Fehler beim Anhängen der Listener:', e);
+                            }
+                        }
+
+                        // MutationObserver: beobachte #viewer auf neue iframes
+                        const viewer = document.getElementById('viewer');
+                        const observer = new MutationObserver((mutations) => {
+                            const iframes = viewer.querySelectorAll('iframe');
+                            iframes.forEach(iframe => {
+                                if (iframe.contentDocument) {
+                                    attachIframeListeners(iframe);
+                                } else {
+                                    iframe.addEventListener('load', () => attachIframeListeners(iframe));
+                                }
                             });
                         });
+                        observer.observe(viewer, { childList: true, subtree: true });
 
+                        // Auch beim rendered-Event nochmal prüfen
+                        currentEpubRendition.on("rendered", () => {
+                            setTimeout(() => {
+                                const iframes = viewer.querySelectorAll('iframe');
+                                iframes.forEach(iframe => attachIframeListeners(iframe));
+                            }, 100);
+                        });
+
+                        // epub.js selected-Event als zusätzlicher Fallback
                         currentEpubRendition.on("selected", (cfiRange) => {
                             currentEpubBook.getRange(cfiRange).then((range) => {
                                 const text = range.toString().trim();

@@ -443,7 +443,9 @@ function displayBooks() {
                         // epub.js selected-Event als zusätzlicher Fallback
                         currentEpubRendition.on("selected", (cfiRange) => {
                             currentEpubBook.getRange(cfiRange).then((range) => {
-                                selectedText = range.toString().trim();
+                                if (!document.getElementById('reader-modal').classList.contains('open')) {
+                                    selectedText = range.toString().trim();
+                                }
                             });
                         });
                         currentEpubRendition.on("touchend", (e) => {

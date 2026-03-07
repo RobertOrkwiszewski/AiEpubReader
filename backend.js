@@ -128,6 +128,8 @@ homeBtn.addEventListener('click', () => {
 const translation = document.getElementById('translation');
 translation.addEventListener('click', () => {
     closePopup('reader-modal');
+
+    selectedText = "";
 });
 const prevPageBtn = document.getElementById('prevPageBtn');
 prevPageBtn.addEventListener('click', () => {

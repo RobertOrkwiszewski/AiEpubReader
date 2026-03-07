@@ -76,6 +76,7 @@ button {
     border-radius: var(--borderRad);
     padding: 20px;
     z-index: 1000;
+    width: 80vw;
 }
 
 .modal-overlay.open {
@@ -121,7 +122,7 @@ button {
 }
 
 #translation {
-    max-height: 70vh;
+    max-height: 60vh;
     overflow-y: auto;
     display: block;
 }

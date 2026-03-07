@@ -9,6 +9,7 @@ function selectLanguage(language) { // FOR CHANGING LANGUAGE WHEN PRESSING BUTTO
 function setLanguage() { // ONLY FOR STARTING APP
     document.getElementById('deineBücher').textContent = getTranslation('deine_buecher');
     document.getElementById('spracheAuswaehlen').textContent = getTranslation('sprache_auswaehlen');
+    document.getElementById('ausgewaehlterText').textContent = getTranslation('ausgewaehlter_text');
     document.getElementById('uebersetzung').textContent = getTranslation('uebersetzung');
     document.getElementById('cancelTaskButton').textContent = getTranslation('abbrechen');
     document.getElementById('confirmTaskButton').textContent = getTranslation('bestaetigen');
@@ -46,6 +47,13 @@ const translations = {
         "ua": "Переклад : ",
         "fr": "Traduction : ",
         "es": "Traducción : "
+    },
+    "ausgewaehlter_text": {
+        "de": "Ausgewählter Text : ",
+        "en": "Selected Text : ",
+        "ua": "Вибраний текст : ",
+        "fr": "Texte sélectionné : ",
+        "es": "Texto seleccionado : "
     },
     "abbrechen": {
         "de": "Abbrechen",

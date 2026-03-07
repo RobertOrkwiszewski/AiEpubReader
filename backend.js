@@ -283,6 +283,7 @@ async function handleSelection(text, cfiRange) {
     selectedTextTranslation = await translateText(selectedText, userLanguage);
 
     document.getElementById('translation').textContent = selectedTextTranslation;
+    document.getElementById('chosenText').textContent = selectedText;
 }
 async function askGeminiInPage() {
     // Zeige eventuell einen "Tippt gerade..." Status an

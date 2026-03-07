@@ -117,12 +117,18 @@ button {
     color: var(--secondary-color);
 }
 
-#uebersetzung {
+#ausgewaehlterText {
     margin: 20px 20px 0px 20px;
 }
 
+#chosenText {
+    max-height: 12vh;
+    overflow-y: auto;
+    display: block;
+}
+
 #translation {
-    max-height: 60vh;
+    max-height: 48vh;
     overflow-y: auto;
     display: block;
 }

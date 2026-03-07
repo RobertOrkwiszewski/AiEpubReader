@@ -452,6 +452,11 @@ function displayBooks() {
                             setTimeout(() => {
                                 if (selectedText !== "") {
                                     handleSelection(selectedText, selectedBook.currentPage);
+
+                                    const windowSelection = currentEpubRendition.getContents()[0].window.getSelection();
+                                    if (windowSelection) {
+                                        windowSelection.removeAllRanges();
+                                    }
                                 }
                             }, 1000);
                         });

@@ -1,5 +1,4 @@
 /*
-- reader modal
 
 Deine Daten und dein API-KEY werden nur auf deinem Gerät gespeichert und werden nicht an Dritte weitergegeben.
 */
@@ -448,9 +447,11 @@ function displayBooks() {
                             });
                         });
                         currentEpubRendition.on("touchend", (e) => {
-                            if (selectedText !== "") {
-                                handleSelection(selectedText, selectedBook.currentPage);
-                            }
+                            setTimeout(() => {
+                                if (selectedText !== "") {
+                                    handleSelection(selectedText, selectedBook.currentPage);
+                                }
+                            }, 1000);
                         });
 
                     };

@@ -47,9 +47,12 @@ async function saveData() {
             await writable.close();
 
             console.log("Erfolgreich gespeichert!");
+            alert("Erfolgreich gespeichert!");
         } catch (error) {
             console.error("Speichern abgebrochen oder fehlgeschlagen:", error);
         }
+    } else {
+        alert("Es gibt keine Bücher zum Speichern!");
     }
 }
 

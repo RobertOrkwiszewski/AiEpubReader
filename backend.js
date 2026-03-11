@@ -69,6 +69,14 @@ function showPage(pageId) {
 
 // ========== BUTTON LISTENER BEGIN (for nonlist Buttons) ==========
 
+// SAVE DATA
+const saveDataBtn = document.getElementById('saveDataBtn');
+if (saveDataBtn) {
+    saveDataBtn.addEventListener('click', () => {
+        saveData();
+    });
+}
+
 // API KEY
 const apiKeyButton = document.getElementById('addApiKeyButton');
 apiKeyButton.addEventListener('click', () => {
@@ -592,7 +600,5 @@ function appStart() {
     if (apiKEY === '') {
         openPopup('apiKey-modal');
     }
-
-    saveData();
 }
 document.addEventListener('DOMContentLoaded', appStart);

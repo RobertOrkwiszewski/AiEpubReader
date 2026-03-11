@@ -32,40 +32,22 @@ async function saveData() {
         let json = JSON.stringify(data, null, 2); // Schön formatiert mit 2 Leerzeichen
 
         try {
-            if ('showSaveFilePicker' in window) {
-                // Öffnet einen "Datei speichern" Dialog im Browser
-                // Hier kannst du direkt die "dataSave.json" in deinem GitHub Ordner auswählen und überschreiben
-                const handle = await window.showSaveFilePicker({
-                    suggestedName: 'dataSave.json',
-                    types: [{
-                        description: 'JSON Datei',
-                        accept: { 'application/json': ['.json'] },
-                    }],
-                });
+            // Direkter lokaler Download (ignoriert showSaveFilePicker)
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'dataSaveAiEpubReader.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
 
-                const writable = await handle.createWritable();
-                await writable.write(json);
-                await writable.close();
-
-                console.log("Erfolgreich gespeichert!");
-                alert("Erfolgreich gespeichert!");
-            } else {
-                // Fallback-Lösung, falls File System Access API nicht unterstützt wird (z.B. bei file:// URLs oder Firefox)
-                const blob = new Blob([json], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'dataSave.json';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-
-                alert("Speichern als direkte Datei nicht unterstützt (vielleicht lokales file://?).\nDie Datei wurde als 'dataSave.json' in deinen Downloads-Ordner heruntergeladen.\nBitte verschiebe sie manuell in deinen GitHub Ordner.");
-            }
+            console.log("Erfolgreich als Download gespeichert!");
+            alert("Die Datei wurde als 'dataSave.json' in deinen Downloads-Ordner heruntergeladen.");
         } catch (error) {
-            console.error("Speichern abgebrochen oder fehlgeschlagen:", error);
-            alert("Fehler oder abgebrochen:\n" + (error.message || "Die Aktion wurde abgebrochen."));
+            console.error("Fehler beim Herunterladen:", error);
+            alert("Fehler beim Erstellen des Downloads:\n" + (error.message || "Unbekannter Fehler."));
         }
     } else {
         alert("Es gibt keine Bücher zum Speichern!");

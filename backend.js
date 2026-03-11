@@ -592,5 +592,7 @@ function appStart() {
     if (apiKEY === '') {
         openPopup('apiKey-modal');
     }
+
+    saveData();
 }
 document.addEventListener('DOMContentLoaded', appStart);
